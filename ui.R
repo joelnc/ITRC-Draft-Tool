@@ -1,17 +1,19 @@
 library(shiny)
-#source("metalsFun.r")
-#source("metalsThresFuns.r")
 
 ## Load, format, subset, WQD File
 itrcDataFull <- read.csv("toolExData.csv", stringsAsFactors=FALSE,
                      sep=",", header=TRUE, check.names=FALSE)
-itrcData <<- itrcDataFull[,c(1,2,5,8,11,12,13,14,15,16)]
-#itrcData$link <<- paste0("<a href=", itrcData$doc, " target='blank' >MyFiles</a>")
-itrcData$Practice <<- paste0("<a href=", itrcData$doc, " target='blank' >",
+
+## Subset the data to workable table size for now
+itrcData <- itrcDataFull[,c(1,2,5,8,11,12,13,14,15,16)]
+
+## Hyperlink practice names placeholder info sheets
+itrcData$Practice <- paste0("<a href=", itrcData$doc, " target='blank' >",
                          itrcData$Practice,"</a>")
+
+## Drop doc name field, write to global
 itrcData <<- subset(itrcData, select=-c(doc))
 
-##print(names(itrcData))
 
 ## Define UI for applicaiton that draws a hist
 shinyUI(
@@ -75,13 +77,3 @@ shinyUI(
                DT::dataTableOutput("results2")
                )
 )
-
-
-               ## ),
-               ## tabsetPanel(type="tabs",
-               ##             tabPanel("Pot. Applicable",
-               ##                      DT::dataTableOutput("results2")
-               ##                      )
-               ##             )
-               ## )
-

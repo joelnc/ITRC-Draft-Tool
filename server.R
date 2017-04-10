@@ -1,53 +1,50 @@
 library(shiny)
 library(tuple)
 
+## Put dataSubset1() and 2() into the same reactive call
+##... as is filtering doesn't work correctly backwards and forward
+##... see also conditionalPanel()
+
+
 ## Define server logic reqd to draw hist
 shinyServer(
     function(input, output) {
 
-#########################################################################
-######################### CharMeck Data Functions #######################
-#########################################################################
-
-        ## 'Flag' df, holds T/F values indicating which data to show
+        ## 'flags' df, holds T/F values indicating which data to show
         ## Initialize as all False
-        flags1 <- itrcData[1,2:4]
+        flags1 <- itrcData[1,2:4] # as in Sed., Bact., TP
         flags1[flags1!=FALSE] <- FALSE
 
+        ## Flags for data conditions
         flags2 <- data.frame(ThirdPartyLab=FALSE, ThirdPartyField=FALSE, IDB=FALSE,
                          RefJournal=FALSE, VendorData=FALSE)
 
-        ## Pollutant subset
+        ## Pollutant filtering subset
         dataSubset1 <- reactive({
 
             ## If nothing selected, RETURN ALL
             if (is.null(input$pollutants)) {
                 a0 <- itrcData
             } else {
-
                 ## If just one box is checked, simple subset
                 if (length(input$pollutants)==1) {
                     a0 <- itrcData[which(itrcData[ ,input$pollutants]!='X'), ]
-                }
 
-                else {
-                    temp0 <- NULL ## init. container
-                    print(input$pollutants) ## diagn. output
-                    for (i0 in 1:length(input$pollutants)) { ## loop over cols. to filter
-                        for (j0 in 1:nrow(itrcData)) { ## loop over rows in given col.
-                            ## If given row is a TRUE, record its row index
+                ## More than 1, loop over pollutants and rows... find better way
+                } else {
+                    temp0 <- NULL # init. container
+                    for (i0 in 1:length(input$pollutants)) { # loop over cols. to filter
+                        for (j0 in 1:nrow(itrcData)) { # loop over rows in given col.
+                            ## If given row isn't an 'X', record its row index
                             if (itrcData[j0, input$pollutants[i0]]!='X') {
                                 temp0 <- c(temp0, j0)
                             }
                         }
                     }
-                    print(temp0)
-                    print(temp0[tuplicated(temp0, n=length(input$pollutants))])
+
                     ## Return subset of practices where all checkbox values = TRUE
                     a0 <- itrcData[temp0[tuplicated(temp0, n=length(input$pollutants))], ]
-
                 }
-
             }
         })
 
@@ -58,7 +55,6 @@ shinyServer(
             ## If nothing selected, RETURN ALL
             if (all(c(input$TPL, input$TPF, input$IDB, input$refJ,
                       input$Vend)==FALSE)) {
-                ##a1 <- itrcData
                 a1 <- dataSubset1()
 
             ## Else, do a conditional subset, display results
@@ -85,12 +81,14 @@ shinyServer(
 
                 ## If just one box is checked, simple subset
                 if (length(showThese)==1) {
-                    a1 <- itrcData[which(itrcData[ ,showThese]==TRUE), ]
+                    #a0 <- dataSubset1()
+                    #browser()
+                    a1 <- dataSubset1()[which(dataSubset1()[ ,showThese]==TRUE), ]
 
                 ## More than one box, attrocious loop
                 } else {
+                    a0 <- dataSubset1()
                     temp <- NULL ## init. container
-                    print(showThese) ## diagn. output
                     for (i in 1:length(showThese)) { ## loop over cols. to filter
                         for (j in 1:nrow(itrcData)) { ## loop over rows in given col.
                             ## If given row is a TRUE, record its row index
@@ -99,10 +97,8 @@ shinyServer(
                             }
                         }
                     }
-                    print(temp)
-                    print(temp[tuplicated(temp, n=length(showThese))])
                     ## Return subset of practices where all checkbox values = TRUE
-                    a1 <- itrcData[temp[tuplicated(temp, n=length(showThese))], ]
+                    a1 <- a0[temp[tuplicated(temp, n=length(showThese))], ]
                 }
             }
             })
@@ -116,7 +112,5 @@ shinyServer(
                                        rownames=FALSE
                                        )
                                )
-
-
     }) ## Done
 

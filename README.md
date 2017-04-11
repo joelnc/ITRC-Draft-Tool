@@ -1,0 +1,2 @@
+# ITRC-Draft-Tool
+This is a prototype of the "BMP Applicability Tool", developed as a part of the ITRC Stormwater BMP Team's work  (http://www.itrcweb.org/Team/Public?teamID=72).  It was created to facilitate Team discussion about what a BMP Applicability Tool should include, and how it should function.  It carries no ITRC endorsement and is currently populated with dummy data for testing purposes only.  Any official work products from this Team will be avaiable at the link provided above.      

@@ -183,7 +183,7 @@ shinyServer(
         output$results2 <- DT::renderDataTable(
                                    DT::datatable(
                                            dataSubset0(),
-                                       options(list(pageLength = 25)),
+                                       options(list(pageLength = 10)),
                                        escape =FALSE,
                                        rownames=FALSE
                                        )

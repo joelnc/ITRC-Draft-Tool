@@ -17,7 +17,7 @@ itrcData <<- subset(itrcData, select=-c(doc))
 
 ## Define UI for applicaiton that draws a hist
 shinyUI(
-    navbarPage(title="ITRC Eval. Tool",
+    navbarPage(title="ITRC BMP Tool",
                selected="Data",
                br(),
                h2("**DRAFT/PROTOTYPE**", align="center"),

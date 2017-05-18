@@ -185,7 +185,23 @@ shinyServer(
                                            dataSubset0(),
                                        options(list(pageLength = 10)),
                                        escape =FALSE,
-                                       rownames=FALSE
+                                       rownames=FALSE,
+                                       callback=JS("var tips = ['',
+                                                                'Including TSS, SSC, and Turbidity',
+                                                                'Total or Fractional P',
+                                                                'May include Fecal Coliform, E. Coli, and Enterrococcus',
+                                                                'Indicates whether 3rd labratory testing informs preformance expectations',
+                                                                'Indicates whether 3rd field testing informs preformance expectations',
+                                                                'Indicates whether the International SW BMP Database includes data on this practice',
+                                                                'Indicates whether journal articles support this practices performance expectations',
+                                                                'Indicates whether vendor data supports this practices performance expectations'],
+                                                        header = table.columns().header();
+                                                    for (var i = 0; i < tips.length; i++) {
+                                                      $(header[i]).attr('title', tips[i]);
+                                                    }
+                                                    ")
                                        )
-        )
+
+                               )
+
     })## Done

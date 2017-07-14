@@ -1,0 +1,37 @@
+---
+runtime: shiny
+output: html_document
+---
+
+```{r echo = FALSE}
+binner <- function(var) {
+  library(shiny)
+  require(shiny)
+  shinyApp(
+    ui = fluidPage(
+      sidebarLayout(
+        sidebarPanel(sliderInput("n", "Bins", 5, 100, 20)),
+        mainPanel(plotOutput("hist"))
+      )
+    ), 
+    server = function(input, output) {
+      output$hist <- renderPlot( 
+        hist(var, breaks = input$n,
+          col = "skyblue", border = "white") 
+      )
+    }
+  )
+}
+```
+
+## Old Faithful
+
+Old faithful tends to erupt at regular intervals (hence its name). But how regular are these intervals?  
+
+I went to Yellowstone national park and monitored the old faithful geyser during fourteen days. During this time I wrote down the exact number of minutes that passed between each eruption.
+
+Just kidding, I used the `faithful` data set which comes with R. It contains the same information. Below is a histogram of the results. As you can see the times are bimodal. Old faithful is not entirely faithful; it appears to have a mistress on the side.
+
+```{r echo = FALSE}
+binner(rnorm(1000))
+```

@@ -11,6 +11,11 @@ itrcData <- itrcDataFull[,c(1,2,5,8,11,12,13,14,15,16)]
 itrcData$Practice <- paste0("<a href=", itrcData$doc, " target='blank' >",
                          itrcData$Practice,"</a>")
 
+##itrcData$IDB <- '<a href="#", onclick="alert(\'Hello World\');">Helloo</a>'
+##itrcData$IDB <- '<a href="#", onclick="alert(', itrcData$doc,' );">Helloo</a>')
+itrcData$IDB <- paste0("<a href=", "test2.html", " target='blank' >",
+                         itrcData$IDB,"</a>")
+
 ## Drop doc name field, write to global
 itrcData <<- subset(itrcData, select=-c(doc))
 

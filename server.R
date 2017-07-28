@@ -182,7 +182,7 @@ shinyServer(
         ## Display the subset
         output$results2 <- DT::renderDataTable(
                                    DT::datatable(
-                                           dataSubset0(),
+                                           dataSubset0()[,1:9],
                                        options(list(pageLength = 10)),
                                        escape =FALSE,
                                        rownames=FALSE,
@@ -203,5 +203,71 @@ shinyServer(
                                        )
 
                                )
+
+        ## observe event 1
+        observeEvent(input$results2_cell_clicked, {
+
+            info <- input$results2_cell_clicked
+
+            if (is.null(info$value)) {
+                return()
+            } else if (!is.null(info$value) & info$col %in% c(1,2,3)) {
+                showModal(
+                    modalDialog(
+                        htmlOutput("text")
+                    )
+                )
+            }
+        })
+
+    observeEvent(input$x1_cell_clicked, {
+        info <- input$x1_cell_clicked
+        output$text <- renderUI({
+            if (dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]]=="YES") {
+                aPart <- paste("<font color='green'><b>",
+                               dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]],
+                               "</b></font>")
+            } else {
+                aPart <- paste("<font color='red'><b>",
+                               dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]],
+                               "</b></font>")
+            }
+
+            bPart <- paste("Practice: <b>", dataB$Practice[info$row],
+                           "</b> potentially treats for pollutant <b>",
+                           names(dataB)[polMap$dfRow[polMap$dtRow==info$col]], "</b>.")
+            cPart <- "<u><b>IBMPDB</b></u>"
+            dPart <- paste("<li> Data for this practice ",
+                           dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]+1],
+                           "included in the ISWBMPDB.</li>")
+            ePart <- paste("<li> The ISWBMPDB ",
+                           dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]+2],
+                           "show a statistically significant effect for this combo.</li>")
+            fPart <- paste("<li> The ISWBMPDB ",
+                           dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]+3],
+                           "show a meaningful effect for this combo.</li>")
+            gPart <- "<b><u>Unit Processes</u></b> <li></li>"
+            hPart <- paste("<b><u> ", dataB$Practice[info$row], "and Pollutants Similar To",
+                           names(dataB)[polMap$dfRow[polMap$dtRow==info$col]], "</u></b> <li></li>")
+
+            if (dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]]=="YES") {
+                HTML(paste(aPart, br(), br(), bPart, br(), br(),cPart, br(),
+                           dPart, ePart, fPart, br(), gPart, br(), hPart))
+            } else {
+                HTML(paste(aPart, br(), br(), bPart, br(), br(),cPart, br(),
+                       dPart, br(), gPart, br(), hPart))
+
+            }
+        })
+    })
+
+
+        ## observeEvent(input$results2_cell_clicked, {
+        ##     info <- input$results2_cell_clicked
+
+        ##     output$text <- renderUI({
+        ##         HTML(itrcData$isIn[info$row])
+        ## })
+        ## })
 
     })## Done

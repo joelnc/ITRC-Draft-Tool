@@ -1,7 +1,7 @@
 library(shiny)
 
 ## Load, format, subset, WQD File
-itrcDataFull <- read.csv("toolExData.csv", stringsAsFactors=FALSE,
+itrcDataFull <- read.csv("toolExData2.csv", stringsAsFactors=FALSE,
                      sep=",", header=TRUE, check.names=FALSE)
 
 ## Subset the data to workable table size for now
@@ -16,8 +16,31 @@ for (i in 1:nrow(itrcData)) {
     ifelse(itrcData$IDB[i]==TRUE,
            itrcData$isIn[i] <- paste("<font color='green'><b> IS </b></font>"),
            itrcData$isIn[i] <- paste("<font color='red'><b> IS NOT </b></font>"))
+
+    ifelse(itrcData$Sediment[i]=="Yes",
+           itrcData$stat1[i] <- paste("<font color='green'><b> DOES </b></font>"),
+           itrcData$stat1[i] <- paste("<font color='red'><b> DOES NOT </b></font>"))
+    ifelse(itrcData$Sediment[i]=="Yes",
+           itrcData$meaning1[i] <- paste("<font color='green'><b> DOES </b></font>"),
+           itrcData$meaning1[i] <- paste("<font color='red'><b> DOES NOT </b></font>"))
+
+    ifelse(itrcData$P[i]=="Yes",
+           itrcData$stat2[i] <- paste("<font color='green'><b> DOES </b></font>"),
+           itrcData$stat2[i] <- paste("<font color='red'><b> DOES NOT </b></font>"))
+    ifelse(itrcData$P[i]=="Yes",
+           itrcData$meaning2[i] <- paste("<font color='green'><b> DOES </b></font>"),
+           itrcData$meaning2[i] <- paste("<font color='red'><b> DOES NOT </b></font>"))
+
+    ifelse(itrcData$Bacteria[i]=="Yes",
+           itrcData$stat3[i] <- paste("<font color='green'><b> DOES </b></font>"),
+           itrcData$stat3[i] <- paste("<font color='red'><b> DOES NOT </b></font>"))
+    ifelse(itrcData$Bacteria[i]=="Yes",
+           itrcData$meaning3[i] <- paste("<font color='green'><b> DOES </b></font>"),
+           itrcData$meaning3[i] <- paste("<font color='red'><b> DOES NOT </b></font>"))
+
 }
 
+polMap <<- list(dtRow=c(2,3,4), dfRow=c(11,13,15))
 
 ## Drop doc name field, write to global
 itrcData <<- subset(itrcData, select=-c(doc))

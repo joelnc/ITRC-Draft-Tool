@@ -220,37 +220,40 @@ shinyServer(
             }
         })
 
-    observeEvent(input$x1_cell_clicked, {
-        info <- input$x1_cell_clicked
+    observeEvent(input$results2_cell_clicked, {
+
+        info <- input$results2_cell_clicked
+
+##        browser()
         output$text <- renderUI({
-            if (dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]]=="YES") {
+
+            if (itrcData[info$row, info$col+1]=="Yes") {
                 aPart <- paste("<font color='green'><b>",
-                               dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]],
-                               "</b></font>")
+                               "YES", "</b></font>")
             } else {
                 aPart <- paste("<font color='red'><b>",
-                               dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]],
-                               "</b></font>")
+                               "NO", "</b></font>")
             }
 
-            bPart <- paste("Practice: <b>", dataB$Practice[info$row],
+            bPart <- paste("Practice: <b>", itrcData$Practice[info$row],
                            "</b> potentially treats for pollutant <b>",
-                           names(dataB)[polMap$dfRow[polMap$dtRow==info$col]], "</b>.")
+                           ##names(itrcData)[polMap$dfRow[polMap$dtRow==info$col]], "</b>.")
+                           names(itrcData)[info$col+1], "</b>.")
             cPart <- "<u><b>IBMPDB</b></u>"
             dPart <- paste("<li> Data for this practice ",
-                           dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]+1],
+                           itrcData$isIn[info$row],
                            "included in the ISWBMPDB.</li>")
             ePart <- paste("<li> The ISWBMPDB ",
-                           dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]+2],
+                           itrcData[info$row, polMap$dfRow[polMap$dtRow==info$col]],
                            "show a statistically significant effect for this combo.</li>")
             fPart <- paste("<li> The ISWBMPDB ",
-                           dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]+3],
+                           itrcData[info$row, polMap$dfRow[polMap$dtRow==info$col]+1],
                            "show a meaningful effect for this combo.</li>")
             gPart <- "<b><u>Unit Processes</u></b> <li></li>"
-            hPart <- paste("<b><u> ", dataB$Practice[info$row], "and Pollutants Similar To",
-                           names(dataB)[polMap$dfRow[polMap$dtRow==info$col]], "</u></b> <li></li>")
+            hPart <- paste("<b><u> ", itrcData$Practice[info$row], "and Pollutants Similar To",
+                           names(itrcData)[info$col+1], "</u></b> <li></li>")
 
-            if (dataB[info$row, polMap$dfRow[polMap$dtRow==info$col]]=="YES") {
+            if (itrcData[info$row, polMap$dfRow[polMap$dtRow==info$col]]=="YES") {
                 HTML(paste(aPart, br(), br(), bPart, br(), br(),cPart, br(),
                            dPart, ePart, fPart, br(), gPart, br(), hPart))
             } else {

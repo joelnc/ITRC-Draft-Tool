@@ -71,7 +71,7 @@ shinyServer(
             #### If 1 pollutnant
             ## First extract based on that
             } else if (length(input$pollutants)==1) {
-                pollFilt <- itrcData[which(itrcData[ ,input$pollutants]!='X'), ]
+                pollFilt <- itrcData[which(itrcData[ ,input$pollutants]!='No'), ]
 
                     if (all(c(input$TPL, input$TPF, input$IDB, input$refJ,
                               input$Vend)==FALSE)) {
@@ -123,7 +123,7 @@ shinyServer(
                 for (i in 1:length(input$pollutants)) { # loop over cols. to filter
                     for (j in 1:nrow(itrcData)) { # loop over rows in given col.
                         ## If given row isn't an 'X', record its row index
-                        if (itrcData[j, input$pollutants[i]]!='X') {
+                        if (itrcData[j, input$pollutants[i]]!='No') {
                             temp <- c(temp, j)
                         }
                     }

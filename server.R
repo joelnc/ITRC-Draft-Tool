@@ -1,5 +1,6 @@
 library(shiny)
 library(tuple)
+library(DT)
 
 ## Put dataSubset1() and 2() into the same reactive call
 ##... as is filtering doesn't work correctly backwards and forward

@@ -183,8 +183,13 @@ shinyServer(
         output$results2 <- DT::renderDataTable(
                                    DT::datatable(
                                            dataSubset0()[,1:9],
-                                       options(list(pageLength = 10)),
-                                       escape =FALSE,
+                                           options(list(pageLength = 10,
+                                                        columnDefs = list(list(className = 'dt-center', targets = 1:4)),
+                                                        columnDefs = list(list(className = 'dt-left', targets = 0))
+
+                                                        )),
+                                       escape=FALSE,
+                                       select="single",
                                        rownames=FALSE,
                                        callback=JS("var tips = ['',
                                                                 'Including TSS, SSC, and Turbidity',
@@ -201,7 +206,6 @@ shinyServer(
                                                     }
                                                     ")
                                        )
-
                                )
 
         ## observe event 1
@@ -220,57 +224,54 @@ shinyServer(
             }
         })
 
-    observeEvent(input$results2_cell_clicked, {
+        ##polMap <<- list(dtRow=c(2,3,4), dfRow=c(11,13,15))
 
-        info <- input$results2_cell_clicked
+        ## This seems unnecessary as as an observer. The above call should do a fresh pull
+        ## when clicked. Investigate
+        observeEvent(input$results2_cell_clicked, {
 
-##        browser()
-        output$text <- renderUI({
+            info <- input$results2_cell_clicked
+            ##browser()
 
-            if (itrcData[info$row, info$col+1]=="Yes") {
-                aPart <- paste("<font color='green'><b>",
-                               "YES", "</b></font>")
-            } else {
-                aPart <- paste("<font color='red'><b>",
-                               "NO", "</b></font>")
-            }
+            output$text <- renderUI({
+                if (itrcData[info$row, info$col+1]=="Yes") {
+                    aPart <- paste("<font color='green'><b>",
+                                   "YES", "</b></font>")
+                } else {
+                    aPart <- paste("<font color='red'><b>",
+                                   "NO", "</b></font>")
+                }
 
-            bPart <- paste("Practice: <b>", itrcData$Practice[info$row],
-                           "</b> potentially treats for pollutant <b>",
-                           ##names(itrcData)[polMap$dfRow[polMap$dtRow==info$col]], "</b>.")
-                           names(itrcData)[info$col+1], "</b>.")
-            cPart <- "<u><b>IBMPDB</b></u>"
-            dPart <- paste("<li> Data for this practice ",
-                           itrcData$isIn[info$row],
-                           "included in the ISWBMPDB.</li>")
-            ePart <- paste("<li> The ISWBMPDB ",
-                           itrcData[info$row, polMap$dfRow[polMap$dtRow==info$col]],
-                           "show a statistically significant effect for this combo.</li>")
-            fPart <- paste("<li> The ISWBMPDB ",
-                           itrcData[info$row, polMap$dfRow[polMap$dtRow==info$col]+1],
-                           "show a meaningful effect for this combo.</li>")
-            gPart <- "<b><u>Unit Processes</u></b> <li></li>"
-            hPart <- paste("<b><u> ", itrcData$Practice[info$row], "and Pollutants Similar To",
-                           names(itrcData)[info$col+1], "</u></b> <li></li>")
+                bPart <- paste("Practice: <b>", itrcData$Practice[info$row],
+                               "</b> potentially treats for pollutant <b>",
+                               ##names(itrcData)[polMap$dfRow[polMap$dtRow==info$col]], "</b>.")
+                               names(itrcData)[info$col+1], "</b>.")
+                cPart <- "<u><b>IBMPDB</b></u>"
+                dPart <- paste("<li> Data for this practice ",
+                               itrcData$isIn[info$row],
+                               "included in the ISWBMPDB.</li>")
+                ePart <- paste("<li> The ISWBMPDB ",
+                               itrcData[info$row, polMap$dfRow[polMap$dtRow==info$col+1]],
+                               "show a statistically significant effect for this combo.</li>")
+                fPart <- paste("<li> The ISWBMPDB ",
+                               itrcData[info$row, polMap$dfRow[polMap$dtRow==info$col+1]],
+                               "show a meaningful effect for this combo.</li>")
+                gPart <- "<b><u>Unit Processes</u></b> <li>Say something about how knowledge of unit processes affected our assessment</li>"
+                hPart <- paste("<b><u> ", itrcData$Practice[info$row], "and Pollutants Similar To",
+                               names(itrcData)[info$col+1], "</u></b> <li>Say something relevant to this heading</li>")
 
-            if (itrcData[info$row, polMap$dfRow[polMap$dtRow==info$col]]=="YES") {
-                HTML(paste(aPart, br(), br(), bPart, br(), br(),cPart, br(),
-                           dPart, ePart, fPart, br(), gPart, br(), hPart))
-            } else {
-                HTML(paste(aPart, br(), br(), bPart, br(), br(),cPart, br(),
-                       dPart, br(), gPart, br(), hPart))
+                if (itrcData$IDB[info$row]==TRUE) {
+                    HTML(paste(aPart, br(), br(), bPart, br(), br(),cPart, br(),
+                               dPart, ePart, fPart, br(), gPart, br(), hPart))
+                } else {
+                    HTML(paste(aPart, br(), br(), bPart, br(), br(),cPart, br(),
+                               dPart, br(), gPart, br(), hPart))
 
-            }
+                }
+            })
         })
-    })
 
 
-        ## observeEvent(input$results2_cell_clicked, {
-        ##     info <- input$results2_cell_clicked
+   })## Done
 
-        ##     output$text <- renderUI({
-        ##         HTML(itrcData$isIn[info$row])
-        ## })
-        ## })
 
-    })## Done

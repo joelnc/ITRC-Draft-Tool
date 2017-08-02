@@ -104,7 +104,7 @@ shinyUI(
                                     )
                           )
                ),
-               h3("Note: The table is currently populated with dummy data.  This is for functionality and testing purposes only."),
+               h6("Note: The table is currently populated with dummy data.  This is for functionality and testing purposes only.", color="red"),
                hr(),
                DT::dataTableOutput("results2")
                )

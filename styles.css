@@ -30,3 +30,43 @@ body {
     /* background-color:#f7f6e9 */
     background-color: #ffff
 }
+
+.button {
+  display: inline-flex;
+  border-radius: 4px;
+  background-color: #CCCCCC;
+  border: none;
+  color: #000000;
+  text-align: center;
+  font-size: 16px;
+  padding: 6px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 1px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-flex;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -10px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 10px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}

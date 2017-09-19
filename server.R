@@ -10,6 +10,50 @@ library(DT)
 shinyServer(
     function(input, output) {
 
+
+
+        ## Pollutant only filtering
+        dataSubset1 <- reactive({
+            #### If no pollutnats
+            if (is.null(input$pollutants)) {
+                pollFilt <- itrcData
+
+            ## First extract based on that
+            } else if (length(input$pollutants)==1) {
+                pollFilt <- itrcData[which(itrcData[ ,input$pollutants]!='No'), ]
+
+            #### If multiple Pollutants
+            } else if (length(input$pollutants)>1) {
+                ## pollFilt <- itrcData[which(itrcData[ ,input$pollutants]!='X'), ]
+
+                temp <- NULL # init. container
+                for (i in 1:length(input$pollutants)) { # loop over cols. to filter
+                    for (j in 1:nrow(itrcData)) { # loop over rows in given col.
+                        ## If given row isn't an 'X', record its row index
+                        if (itrcData[j, input$pollutants[i]]!='No') {
+                            temp <- c(temp, j)
+                        }
+                    }
+                }
+                pollFilt <-itrcData[temp[tuplicated(temp, n=length(input$pollutants))], ]
+
+            }
+        })
+
+        ## Pollutant only table
+        output$results <- DT::renderDataTable(
+                                   DT::datatable(
+                                           dataSubset1()[,1:2],
+                                           escape=FALSE,
+                                           select="single",
+                                           rownames=FALSE,
+                                           options = list(pageLength = 25)
+                                       )
+                               )
+
+
+
+
         ## 'flags' df, holds T/F values indicating which data to show
         ## Initialize as all False
         flags1 <- itrcData[1,2:4] # as in Sed., Bact., TP

@@ -44,7 +44,9 @@ shinyServer(
                                            escape=FALSE,
                                            select="single",
                                            rownames=FALSE,
-                                           options = list(pageLength = 25)
+                                           options = list(pageLength = 25,
+                                                          searching=FALSE,
+                                                          paging=FALSE)
                                        )
                                )
 

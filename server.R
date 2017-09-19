@@ -11,13 +11,11 @@ shinyServer(
     function(input, output) {
 
 
-
         ## Pollutant only filtering
         dataSubset1 <- reactive({
             #### If no pollutnats
             if (is.null(input$pollutants)) {
                 pollFilt <- itrcData
-
             ## First extract based on that
             } else if (length(input$pollutants)==1) {
                 pollFilt <- itrcData[which(itrcData[ ,input$pollutants]!='No'), ]
@@ -36,14 +34,13 @@ shinyServer(
                     }
                 }
                 pollFilt <-itrcData[temp[tuplicated(temp, n=length(input$pollutants))], ]
-
             }
         })
 
         ## Pollutant only table
         output$results <- DT::renderDataTable(
                                    DT::datatable(
-                                           dataSubset1()[,1:2],
+                                           dataSubset1()[,c("Practice", "notesDesc")],
                                            escape=FALSE,
                                            select="single",
                                            rownames=FALSE,

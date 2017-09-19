@@ -4,7 +4,7 @@ library(shiny)
 ## itrcDataFull <- read.csv("toolExData2.csv", stringsAsFactors=FALSE,
 ##                      sep=",", header=TRUE, check.names=FALSE)
 
-itrcDataFull <- read.csv("Component Sheet 6-12-17 doug H.csv", stringsAsFactors=FALSE,
+itrcDataFull <- read.csv("Component sheet 6-12-17 doug H.csv", stringsAsFactors=FALSE,
                      sep=",", header=TRUE, check.names=FALSE)
 
 ## Subset the data to workable table size for now
@@ -26,7 +26,7 @@ shinyUI(
                includeCSS("styles.css"),
                h2("**DRAFT/PROTOTYPE**", align="center"),
                h2("ITRC Stormwater BMP Applicability / Evaulation Tool"),
-               h3("Here is the tool..."),
+               h6("Note: The table is currently populated with dummy data.  This is for functionality and testing purposes only.", color="red"),
                column(4,
                       br(),
                       wellPanel(
@@ -38,22 +38,17 @@ shinyUI(
                                              Nutrients=names(itrcData[c(23,24,27:30)]),
                                              Other=names(itrcData[c(22,25,26,31:38)])),
                                          multiple=TRUE),
-                          h5("Select the pollutants of concern from the drop down box, above.  The table will update to show only Stormwater Practices that have been determined to have meaningfull removal potential for the selected pollutant(s)."),
-
-
-                          HTML('<button data-toggle="collapse" data-target="#demo" class="button" style="vertical-align:middle"><span>Pollutant Removal Determinations </span></button>'),
-                          tags$div(id = 'demo',  class="collapse",
-                                       h4("Some words....")
-
-                          )
+                          h5("Select the pollutants of concern from the drop down box, above.  The table will update to show only Stormwater Practices that have been determined to have meaningfull removal potential for the selected pollutant(s).")
                       ),
-                      absolutePanel(
-                          id="id", class="panel panel-default",
-                          HTML('<button data-toggle="collapse" data-target="#demo"><span>Collapsible</span></button>'),
-                          tags$div(id = 'demo',  class="collapse",
-                                   wellPanel(h4("Some words...."))
+                      wellPanel(
+                          HTML('<button data-toggle="collapse" data-target="#demo2" class="button" style="horizontal-align:middle"><span>Pollutant Removal Determinations </span></button>'),
+                          tags$div(id = 'demo2',  class="collapse",
+                                   h5("Determinations about whether a particular practice potentially removes a given pollutant were made by the ITRC Stormwater Work Team."),
+                                   h5("In general determinations were made using empricial data where available, while also relying on knowledge of unit processes affecting pollutant removal potential in the absence of empirical evidence.  Important caveats, limitations, and potential site constraints are discussed in the Practice Information Sheets, and througout the Team Document.")
+
+
                                    )
-                          )
+                      )
                       ),
                column(8,
                       DT::dataTableOutput("results")

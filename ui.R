@@ -35,7 +35,7 @@ shinyUI(
                h2("**DRAFT/PROTOTYPE**", align="center"),
                h2("ITRC Stormwater BMP Applicability / Evaulation Tool"),
                h6("Note: The table is currently populated with dummy data.  This is for functionality and testing purposes only.", color="red"),
-               column(4,
+               column(5,
                       br(),
                       wellPanel(
                           selectizeInput(inputId="pollutants",
@@ -49,6 +49,15 @@ shinyUI(
                           h5("Select the pollutants of concern from the drop down box, above.  The table will update to show only Stormwater Practices that have been determined to have meaningfull removal potential for the selected pollutant(s).")
                       ),
                       wellPanel(
+                          HTML('<button data-toggle="collapse" data-target="#demo2" class="button" style="horizontal-align:middle"><span>Pollutant Removal Determinations</span></button>'),
+                          tags$div(id = 'demo2',  class="collapse",
+                                   h5("Determinations about whether a particular practice potentially removes a given pollutant were made by the ITRC Stormwater Work Team."),
+                                   h5("In general determinations were made using empricial data where available, while also relying on knowledge of unit processes affecting pollutant removal potential in the absence of empirical evidence.  Important caveats, limitations, and potential site constraints are discussed in the Practice Information Sheets, and througout the Team Document.")
+
+
+                                   )
+                      ),
+                      wellPanel(
                           HTML('<button data-toggle="collapse" data-target="#secScr" class="button" style="horizontal-align:middle"><span><b>Secondary Screening</b></span></button>'),
                           tags$div(id = 'secScr',  class="collapse",
                                    h5("In case the returned list is still a bit too long..."),
@@ -60,27 +69,20 @@ shinyUI(
                                                  label="Can Be Installed Underground"),
                                    checkboxInput(inputId="cont",
                                                  label="Design Unaffected By Contaminated Soils"),
-                                   checkboxInput(inputId="hwt",
+                                   checkboxInput(inputId="hgw",
                                                  label="High Water Table"),
                                    checkboxInput(inputId="htss",
                                                  label="High TSS Loads"),
                                    checkboxInput(inputId="hct",
                                                  label="Hydrologic Control"),
                                    checkboxInput(inputId="inf",
-                                                 label="Water In The Ground")
-                                   )
-                      ),
-                      wellPanel(
-                          HTML('<button data-toggle="collapse" data-target="#demo2" class="button" style="horizontal-align:middle"><span>Pollutant Removal Determinations</span></button>'),
-                          tags$div(id = 'demo2',  class="collapse",
-                                   h5("Determinations about whether a particular practice potentially removes a given pollutant were made by the ITRC Stormwater Work Team."),
-                                   h5("In general determinations were made using empricial data where available, while also relying on knowledge of unit processes affecting pollutant removal potential in the absence of empirical evidence.  Important caveats, limitations, and potential site constraints are discussed in the Practice Information Sheets, and througout the Team Document.")
-
-
+                                                 label="Water In The Ground"),
+                                   checkboxInput(inputId="gsi",
+                                                 label="GSI?")
                                    )
                       )
                       ),
-               column(8,
+               column(7,
                       DT::dataTableOutput("results")
                       )
                )

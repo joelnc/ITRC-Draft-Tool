@@ -15,32 +15,166 @@ shinyServer(
         dataSubset1 <- reactive({
             #### If no pollutnats
             if (is.null(input$pollutants)) {
-                pollFilt <- itrcData
+                pollFilt <- itrcData2nd
             ## First extract based on that
             } else if (length(input$pollutants)==1) {
-                pollFilt <- itrcData[which(itrcData[ ,input$pollutants]!='No'), ]
+                pollFilt <- itrcData2nd[which(itrcData2nd[ ,input$pollutants]!='No'), ]
 
             #### If multiple Pollutants
             } else if (length(input$pollutants)>1) {
-                ## pollFilt <- itrcData[which(itrcData[ ,input$pollutants]!='X'), ]
+                ## pollFilt <- itrcData2nd[which(itrcData2nd[ ,input$pollutants]!='X'), ]
 
                 temp <- NULL # init. container
                 for (i in 1:length(input$pollutants)) { # loop over cols. to filter
-                    for (j in 1:nrow(itrcData)) { # loop over rows in given col.
+                    for (j in 1:nrow(itrcData2nd)) { # loop over rows in given col.
                         ## If given row isn't an 'X', record its row index
-                        if (itrcData[j, input$pollutants[i]]!='No') {
+                        if (itrcData2nd[j, input$pollutants[i]]!='No') {
                             temp <- c(temp, j)
                         }
                     }
                 }
-                pollFilt <-itrcData[temp[tuplicated(temp, n=length(input$pollutants))], ]
+                pollFilt <-itrcData2nd[temp[tuplicated(temp, n=length(input$pollutants))], ]
             }
         })
+
+        ## Secondary filters
+        dataSubset2 <- reactive({
+            if (all(c(input$frz, input$ard, input$ung, input$cont,
+                      input$hwt, input$htss, input$hct, input$inf) == FALSE)) {
+                          pollFilt2 <- dataSubset1()
+            } else {
+                ds <- dataSubset1()
+                ##filts <- construct list of yes columns from input$...
+                filts <- NULL
+                if (input$frz) filts <- c(filts, 39)
+                if (input$ard) filts <- c(filts, 40)
+                if (input$ung) filts <- c(filts, 41)
+                if (input$cont) filts <- c(filts, 42)
+                if (input$hwt) filts <- c(filts, 43)
+                if (input$htss) filts <- c(filts, 44)
+
+                filtCont <- NULL
+                for (j in 1:length(filts)) { # loop over cols. to filter
+                    for (i in 1:nrow(ds)) { # loop over rows in given col.
+                        ## If given row isn't an 'X', record its row index
+                        if (ds[i, filts[j]]!='No') {
+                            filtCont <- c(filtCont, i)
+                        }
+                    }
+                }
+
+                if (length(filts==1)) {
+                    pollFilt2 <- ds[which(ds[ ,filtCont]!='No'), ]
+                } else {
+                    pollFilt2 <-ds[filtCont[tuplicated(filtCont, n=length(filts))], ]
+                }
+            }
+
+
+        })
+
+
+
+        ## Secondary filters combined
+        dataSubset3 <- reactive({
+
+            ## If secondarys all false, run through pollutnats....
+            if (all(c(input$frz, input$ard, input$ung, input$cont,
+                      input$hwt, input$htss, input$hct, input$inf) == FALSE)) {
+
+                ## Replace this simple call with a primary call
+                ##pollFilt2 <- dataSubset1()
+
+                ## If no pollutnats
+                if (is.null(input$pollutants)) {
+                    pollFilt <- itrcData2nd
+                    ## First extract based on that
+                } else if (length(input$pollutants)==1) {
+                    pollFilt <- itrcData2nd[which(itrcData2nd[ ,input$pollutants]!='No'), ]
+
+                ## If multiple Pollutants
+                } else if (length(input$pollutants)>1) {
+                    ## pollFilt <- itrcData2nd[which(itrcData2nd[ ,input$pollutants]!='X'), ]
+
+                    temp <- NULL # init. container
+                    for (i in 1:length(input$pollutants)) { # loop over cols. to filter
+                        for (j in 1:nrow(itrcData2nd)) { # loop over rows in given col.
+                            ## If given row isn't an 'X', record its row index
+                            if (itrcData2nd[j, input$pollutants[i]]!='No') {
+                                temp <- c(temp, j)
+                            }
+                        }
+                    }
+                    pollFilt <-itrcData2nd[temp[tuplicated(temp, n=length(input$pollutants))], ]
+                }
+
+
+
+            ##################################################################
+            ## Else if some secondarys true...
+            } else {
+                ##ds <- dataSubset1()
+
+                ## If no pollutnats
+                if (is.null(input$pollutants)) {
+                    pollFilt <- itrcData2nd
+                    ## First extract based on that
+                } else if (length(input$pollutants)==1) {
+                    pollFilt <- itrcData2nd[which(itrcData2nd[ ,input$pollutants]!='No'), ]
+
+                ## If multiple Pollutants
+                } else if (length(input$pollutants)>1) {
+                    ## pollFilt <- itrcData2nd[which(itrcData2nd[ ,input$pollutants]!='X'), ]
+
+                    temp <- NULL # init. container
+                    for (i in 1:length(input$pollutants)) { # loop over cols. to filter
+                        for (j in 1:nrow(itrcData2nd)) { # loop over rows in given col.
+                            ## If given row isn't an 'X', record its row index
+                            if (itrcData2nd[j, input$pollutants[i]]!='No') {
+                                temp <- c(temp, j)
+                            }
+                        }
+                    }
+                    pollFilt <-itrcData2nd[temp[tuplicated(temp, n=length(input$pollutants))], ]
+                }
+
+
+                ##filts <- construct list of yes columns from input$...
+                filts <- NULL
+                if (input$frz) filts <- c(filts, 39)
+                if (input$ard) filts <- c(filts, 40)
+                if (input$ung) filts <- c(filts, 41)
+                if (input$cont) filts <- c(filts, 42)
+                if (input$hwt) filts <- c(filts, 43)
+                if (input$htss) filts <- c(filts, 44)
+
+                filtCont <- NULL
+                for (j in 1:length(filts)) { # loop over cols. to filter
+                    for (i in 1:nrow(pollFilt)) { # loop over rows in given col.
+                        ## If given row isn't an 'X', record its row index
+                        if (pollFilt[i, filts[j]]!='No') {
+                            filtCont <- c(filtCont, i)
+                        }
+                    }
+                }
+
+                if (length(filts==1)) {
+                    pollFilt <- pollFilt[which(pollFilt[ ,filtCont]!='No'), ]
+                } else {
+                    pollFilt <- pollFilt[pollFilt[tuplicated(filtCont, n=length(filts))], ]
+                }
+            }
+        })
+
+
+
+
+
 
         ## Pollutant only table
         output$results <- DT::renderDataTable(
                                    DT::datatable(
-                                           dataSubset1()[,c("Practice", "notesDesc")],
+                                           dataSubset2()[,c("Practice", "notesDesc")],
                                            escape=FALSE,
                                            select="single",
                                            rownames=FALSE,

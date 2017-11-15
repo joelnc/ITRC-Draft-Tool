@@ -6,19 +6,25 @@ library(shiny)
 
 itrcDataFull <- read.csv("Component sheet 6-12-17 doug H.csv", stringsAsFactors=FALSE,
                      sep=",", header=TRUE, check.names=FALSE)
-itrcDataFull2 <<- read.csv("Copy of Component sheet 11-2-17.csv", stringsAsFactors=FALSE,
+itrcDataFull2 <- read.csv("Copy of Component sheet 11-2-17.csv", stringsAsFactors=FALSE,
                      sep=",", header=TRUE, check.names=FALSE)
 
 ## Subset the data to workable table size for now
 ##itrcData <- itrcDataFull[,c(1,2,5,8,11,12,13,14,15,16)]
 itrcData <- itrcDataFull
+itrcData2nd <- itrcDataFull2
 
 ## Hyperlink practice names placeholder info sheets
 itrcData$Practice <- paste0("<a href=", itrcData$doc, " target='blank' >",
                          itrcData$Practice,"</a>")
 itrcData$notesDesc <- "None"
+itrcData2nd$Practice <- paste0("<a href=", itrcData2nd$doc, " target='blank' >",
+                         itrcData2nd$Practice,"</a>")
+itrcData2nd$notesDesc <- "None"
+
 ## Drop doc name field, write to global
 itrcData <<- subset(itrcData, select=-c(doc))
+itrcData2nd <<- subset(itrcData2nd, select=-c(doc))
 
 
 ## Define UI for applicaiton that draws a hist
@@ -35,10 +41,10 @@ shinyUI(
                           selectizeInput(inputId="pollutants",
                                          label="Select Pollutant(s): ",
                                          choices=list(
-                                             Sediments=names(itrcData[c(2:6)]),
-                                             Metals=names(itrcData[c(7:21)]),
-                                             Nutrients=names(itrcData[c(23,24,27:30)]),
-                                             Other=names(itrcData[c(22,25,26,31:38)])),
+                                             Sediments=names(itrcData2nd[c(2:6)]),
+                                             Metals=names(itrcData2nd[c(7:21)]),
+                                             Nutrients=names(itrcData2nd[c(23,24,27:30)]),
+                                             Other=names(itrcData2nd[c(22,25,26,31:38)])),
                                          multiple=TRUE),
                           h5("Select the pollutants of concern from the drop down box, above.  The table will update to show only Stormwater Practices that have been determined to have meaningfull removal potential for the selected pollutant(s).")
                       ),

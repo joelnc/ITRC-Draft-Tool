@@ -1,6 +1,7 @@
 library(shiny)
 library(tuple)
 library(DT)
+library(shinyBS)
 
 ## Put dataSubset1() and 2() into the same reactive call
 ##... as is filtering doesn't work correctly backwards and forward
@@ -18,6 +19,7 @@ shinyServer(
         ## Flags for data conditions
         flags2 <- data.frame(frz=FALSE, ard=FALSE, ung=FALSE,
                              cont=FALSE, hgw=FALSE)
+
 
         ## Combined
         dataSubset0 <- reactive({

@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyBS)
 
 ## Load, format, subset, WQD File
 ## itrcDataFull <- read.csv("toolExData2.csv", stringsAsFactors=FALSE,
@@ -25,7 +26,6 @@ itrcData2nd$notesDesc <- "None"
 ## Drop doc name field, write to global
 itrcData <<- subset(itrcData, select=-c(doc))
 itrcData2nd <<- subset(itrcData2nd, select=-c(doc))
-
 
 ## Define UI for applicaiton that draws a hist
 shinyUI(
@@ -61,24 +61,42 @@ shinyUI(
                           HTML('<button data-toggle="collapse" data-target="#secScr" class="button" style="horizontal-align:middle"><span><b>Secondary Screening</b></span></button>'),
                           tags$div(id = 'secScr',  class="collapse",
                                    h5("In case the returned list is still a bit too long..."),
-                                   checkboxInput(inputId="frz",
-                                                 label="Unaffected By Freezing"),
-                                   checkboxInput(inputId="ard",
-                                                 label="Compatible With Arid Condtions"),
-                                   checkboxInput(inputId="ung",
-                                                 label="Can Be Installed Underground"),
-                                   checkboxInput(inputId="cont",
-                                                 label="Design Unaffected By Contaminated Soils"),
-                                   checkboxInput(inputId="hgw",
-                                                 label="High Water Table"),
-                                   checkboxInput(inputId="htss",
-                                                 label="High TSS Loads"),
-                                   checkboxInput(inputId="hct",
-                                                 label="Hydrologic Control"),
-                                   checkboxInput(inputId="inf",
-                                                 label="Water In The Ground"),
-                                   checkboxInput(inputId="gsi",
-                                                 label="GSI?")
+                                   tags$div(title="Practices that will are not likely to experience substantially reduced pollutant removal performance during periods of freezing air temperatures.",
+                                            checkboxInput(inputId="frz",
+                                                          label="Unaffected By Freezing")
+                                            ),
+                                   tags$div(title="Practices that are suitable for use in arid climates and can meet expected performance criteria without the need for irrigation.",
+                                            checkboxInput(inputId="ard",
+                                                          label="Compatible With Arid Condtions")
+                                            ),
+                                   tags$div(title="b",
+                                            checkboxInput(inputId="ung",
+                                                          label="Can Be Installed Underground")
+                                            ),
+                                   tags$div(title="c",
+                                            checkboxInput(inputId="cont",
+                                                          label="Design Unaffected By Contaminated Soils")
+                                            ),
+                                   tags$div(title="d",
+                                            checkboxInput(inputId="hgw",
+                                                          label="High Water Table")
+                                            ),
+                                   tags$div(title="e",
+                                            checkboxInput(inputId="htss",
+                                                          label="High TSS Loads")
+                                            ),
+                                   tags$div(title="f",
+                                            checkboxInput(inputId="hct",
+                                                          label="Hydrologic Control")
+                                            ),
+                                   tags$div(title="The category of practice has the potential to meet or contribute to regulatory requiments for groundwater recharge and / or volume reduction.",
+                                            checkboxInput(inputId="inf",
+                                                          label="Water In The Ground")
+                                            ),
+                                   tags$div(title="Potentially meets most of the criteria to be classified as Green Stormwater Infrastructure per EPA's definition.",
+                                            checkboxInput(inputId="gsi",
+                                                          label="GSI?")
+                                            )
                                    )
                       )
                       ),

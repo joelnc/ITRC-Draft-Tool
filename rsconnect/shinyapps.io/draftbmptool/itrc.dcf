@@ -1,8 +1,10 @@
 name: itrc
 title:
+username:
 account: draftbmptool
 server: shinyapps.io
-appId: 169244
-bundleId: 988202
+hostUrl: https://api.shinyapps.io/v1
+appId: 236282
+bundleId: 1079259
 url: https://draftbmptool.shinyapps.io/itrc/
-when: 1505844791.02867
+when: 1510850837.22287

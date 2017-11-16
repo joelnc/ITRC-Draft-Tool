@@ -93,6 +93,11 @@ shinyUI(
                       ),
                column(7,
                       DT::dataTableOutput("results")
-                      )
+                      ),
+               tabPanel("Pollutant Filtering"),
+               h1("**DRAFT/PROTOTYPE**", align="center"),
+               h3("ITRC Stormwater BMP Applicability / Evaulation Tool", align="center"),
+               h4("Note: The table is currently populated with dummy data.  This is for functionality and testing purposes only.")
                )
+
 )

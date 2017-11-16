@@ -1,28 +1,38 @@
 /* @import url("//fonts.googleapis.com/css?family=Lobster|Cabin:400,700"); */
 
-h4 {
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 500;
-  line-height: 1.1;
-  color: #333333;
-}
 
-h3 {
+h1 {
   font-family: Arial, Helvetica, sans-serif;
-  color: #73AE57;
+  font-weight: bold;
+  font-size: 250%;
+  color: #f40303;
 }
 
 h2 {
   font-family: Arial, Helvetica, sans-serif;
-  font-weight: 700;
+  font-weight: bold;
   color: #006494;
+}
+
+h3 {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #006294;
+}
+
+h4 {
+  font-family: sans-serif;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #000000;
+}
+
+h5 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
 }
 
 h6 {
   font-family: Arial, Helvetica, sans-serif;
-  font-weight: 700;
-  font-size: 150%;
-  color: #f40303;
 }
 
 body {

@@ -1,43 +1,34 @@
-library(shiny)
-library(shinyBS)
+library(DT)
+library(shinythemes)
 
-## Load, format, subset, WQD File
-## itrcDataFull <- read.csv("toolExData2.csv", stringsAsFactors=FALSE,
-##                      sep=",", header=TRUE, check.names=FALSE)
-
-itrcDataFull <- read.csv("Component sheet 6-12-17 doug H.csv", stringsAsFactors=FALSE,
-                     sep=",", header=TRUE, check.names=FALSE)
+## Load File
 itrcDataFull2 <- read.csv("Copy of Component sheet 11-2-17.csv", stringsAsFactors=FALSE,
                      sep=",", header=TRUE, check.names=FALSE)
 
 ## Subset the data to workable table size for now
-##itrcData <- itrcDataFull[,c(1,2,5,8,11,12,13,14,15,16)]
-itrcData <- itrcDataFull
 itrcData2nd <- itrcDataFull2
 
 ## Hyperlink practice names placeholder info sheets
-itrcData$Practice <- paste0("<a href=", itrcData$doc, " target='blank' >",
-                         itrcData$Practice,"</a>")
-itrcData$notesDesc <- "None"
 itrcData2nd$Practice <- paste0("<a href=", itrcData2nd$doc, " target='blank' >",
                          itrcData2nd$Practice,"</a>")
 itrcData2nd$notesDesc <- "None"
 
 ## Drop doc name field, write to global
-itrcData <<- subset(itrcData, select=-c(doc))
 itrcData2nd <<- subset(itrcData2nd, select=-c(doc))
 
 ## Define UI for applicaiton that draws a hist
 shinyUI(
     navbarPage(title="ITRC BMP Tool",
-               tabPanel("Pollutant Filtering"),
+               theme = shinytheme("paper"),
+               tabPanel("Pollutant and Secondary Filtering"),
                includeCSS("styles.css"),
-               h2("**DRAFT/PROTOTYPE**", align="center"),
-               h2("ITRC Stormwater BMP Applicability / Evaulation Tool"),
-               h6("Note: The table is currently populated with dummy data.  This is for functionality and testing purposes only.", color="red"),
+               h1("**DRAFT/PROTOTYPE**", align="center"),
+               h3("ITRC Stormwater BMP Applicability / Evaulation Tool", align="center"),
+               h4("Note: The table is currently populated with dummy data.  This is for functionality and testing purposes only."),
                column(5,
                       br(),
                       wellPanel(
+                          h5("Pollutant Screening"),
                           selectizeInput(inputId="pollutants",
                                          label="Select Pollutant(s): ",
                                          choices=list(
@@ -46,56 +37,56 @@ shinyUI(
                                              Nutrients=names(itrcData2nd[c(23,24,27:30)]),
                                              Other=names(itrcData2nd[c(22,25,26,31:38)])),
                                          multiple=TRUE),
-                          h5("Select the pollutants of concern from the drop down box, above.  The table will update to show only Stormwater Practices that have been determined to have meaningfull removal potential for the selected pollutant(s).")
+                          h6("Select the pollutants of concern from the drop down box, above.  The table will update to show only Stormwater Practices that have been determined to have meaningfull removal potential for the selected pollutant(s).")
                       ),
                       wellPanel(
-                          HTML('<button data-toggle="collapse" data-target="#demo2" class="button" style="horizontal-align:middle"><span>Pollutant Removal Determinations</span></button>'),
+                          HTML('<button data-toggle="collapse" data-target="#demo2" class="button" style="horizontal-align:middle"><span><b>Pollutant Removal Determinations</b></span></button>'),
                           tags$div(id = 'demo2',  class="collapse",
-                                   h5("Determinations about whether a particular practice potentially removes a given pollutant were made by the ITRC Stormwater Work Team."),
-                                   h5("In general determinations were made using empricial data where available, while also relying on knowledge of unit processes affecting pollutant removal potential in the absence of empirical evidence.  Important caveats, limitations, and potential site constraints are discussed in the Practice Information Sheets, and througout the Team Document.")
+                                   h6("Determinations about whether a particular practice potentially removes a given pollutant were made by the ITRC Stormwater Work Team."),
+                                   h6("In general determinations were made using empricial data where available, while also relying on knowledge of unit processes affecting pollutant removal potential in the absence of empirical evidence.  Important caveats, limitations, and potential site constraints are discussed in the Practice Information Sheets, and througout the Team Document.")
 
 
                                    )
                       ),
                       wellPanel(
-                          HTML('<button data-toggle="collapse" data-target="#secScr" class="button" style="horizontal-align:middle"><span><b>Secondary Screening</b></span></button>'),
+                          HTML('<button data-toggle="collapse" data-target="#secScr" class="button" style="horizontal-align:middle"><span><b>Secondary Screening Criteria</b></span></button>'),
                           tags$div(id = 'secScr',  class="collapse",
-                                   h5("In case the returned list is still a bit too long..."),
+                                   h6("Selecting any of the criteria below with further restrict the list of returned practices categories."),
                                    tags$div(title="Practices that will are not likely to experience substantially reduced pollutant removal performance during periods of freezing air temperatures.",
                                             checkboxInput(inputId="frz",
-                                                          label="Unaffected By Freezing")
+                                                          label="Performance Unaffected By Freezing Conditions")
                                             ),
-                                   tags$div(title="Practices that are suitable for use in arid climates and can meet expected performance criteria without the need for irrigation.",
+                                   tags$div(title="Practices that are suitable for use in arid climates and can meet expected performance levels without the need for irrigation.",
                                             checkboxInput(inputId="ard",
-                                                          label="Compatible With Arid Condtions")
+                                                          label="Performance Unaffected By Arid Condtions")
                                             ),
-                                   tags$div(title="b",
+                                   tags$div(title="Practices that can potentially be installed underground.",
                                             checkboxInput(inputId="ung",
                                                           label="Can Be Installed Underground")
                                             ),
-                                   tags$div(title="c",
+                                   tags$div(title="Practices for which design and operation are largely unaffected by the presence of contaminated soils on site.",
                                             checkboxInput(inputId="cont",
                                                           label="Design Unaffected By Contaminated Soils")
                                             ),
-                                   tags$div(title="d",
+                                   tags$div(title="",
                                             checkboxInput(inputId="hgw",
-                                                          label="High Water Table")
+                                                          label="Performance Unaffected By High Groundwater")
                                             ),
-                                   tags$div(title="e",
+                                   tags$div(title="",
                                             checkboxInput(inputId="htss",
-                                                          label="High TSS Loads")
+                                                          label="Performance Unaffected By High TSS Loads")
                                             ),
-                                   tags$div(title="f",
+                                   tags$div(title="Practices with the potential to meet or contribute to regulatory requiments for volume storage and / or peak rate reduction.",
                                             checkboxInput(inputId="hct",
-                                                          label="Hydrologic Control")
+                                                          label="Can Provide Storage / Peak Flow Control")
                                             ),
-                                   tags$div(title="The category of practice has the potential to meet or contribute to regulatory requiments for groundwater recharge and / or volume reduction.",
+                                   tags$div(title="Practices with the potential to meet or contribute to regulatory requiments for groundwater recharge and / or volume reduction.",
                                             checkboxInput(inputId="inf",
-                                                          label="Water In The Ground")
+                                                          label="Can Contribute to Volume Reduction / Recharge")
                                             ),
                                    tags$div(title="Potentially meets most of the criteria to be classified as Green Stormwater Infrastructure per EPA's definition.",
                                             checkboxInput(inputId="gsi",
-                                                          label="GSI?")
+                                                          label="Green Infrastructure")
                                             )
                                    )
                       )

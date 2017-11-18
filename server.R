@@ -73,7 +73,8 @@ shinyServer(
                 pollFilt <- itrcData2nd
                 ## AND no check boxes
                 if (all(c(input$frz, input$ard, input$ung, input$cont,
-                          input$hgw, input$htss, input$hct, input$inf, input$gsi)==FALSE)) {
+                          input$hgw, input$htss, input$hct, input$inf,
+                          input$gsi, input$air)==FALSE)) {
                     ## Ret all data
                     returnData <- pollFilt
                 } else {
@@ -105,6 +106,9 @@ shinyServer(
                     if (input$gsi==TRUE) flags2$gsi <- TRUE
                     else flags2$gsi <- FALSE
 
+                    if (input$air==TRUE) flags2$air <- TRUE
+                    else flags2$air <- FALSE
+
                     ## Extract colnames for conditional TRUE
                     showThese <- colnames(flags2[which(flags2==TRUE)])
 
@@ -134,7 +138,8 @@ shinyServer(
 
 
                 if (all(c(input$frz, input$ard, input$ung, input$cont,
-                          input$hgw, input$htss, input$hct, input$inf, input$gsi)==FALSE)) {
+                          input$hgw, input$htss, input$hct, input$inf,
+                          input$gsi, input$air)==FALSE)) {
                     returnData <- pollFilt
                 } else {
                     ## (Re-)Set flag values whenever inputs change
@@ -164,6 +169,9 @@ shinyServer(
 
                     if (input$gsi==TRUE) flags2$gsi <- TRUE
                     else flags2$gsi <- FALSE
+
+                    if (input$air==TRUE) flags2$air <- TRUE
+                    else flags2$air <- FALSE
 
                     ## Extract colnames for conditional TRUE
                     showThese <- colnames(flags2[which(flags2==TRUE)])
@@ -206,7 +214,8 @@ shinyServer(
                 pollFilt <- itrcData2nd[temp[tuplicated(temp, n=length(input$pollutants))], ]
 
                     if (all(c(input$frz, input$ard, input$ung, input$cont,
-                          input$hgw, input$htss, input$hct, input$inf, input$gsi)==FALSE)) {
+                              input$hgw, input$htss, input$hct, input$inf,
+                              input$gsi, input$air)==FALSE)) {
                       returnData <- pollFilt
                     } else {
                         ## (Re-)Set flag values whenever inputs change
@@ -234,9 +243,11 @@ shinyServer(
                         if (input$inf==TRUE) flags2$inf <- TRUE
                         else flags2$inf <- FALSE
 
-
                         if (input$gsi==TRUE) flags2$gsi <- TRUE
                         else flags2$gsi <- FALSE
+
+                        if (input$air==TRUE) flags2$air <- TRUE
+                        else flags2$air <- FALSE
 
                         ## Extract colnames for conditional TRUE
                         showThese <- colnames(flags2[which(flags2==TRUE)])

@@ -95,6 +95,10 @@ shinyUI(
                                             tags$div(title="Potentially meets most of the criteria to be classified as Green Stormwater Infrastructure per EPA's definition.",
                                                      checkboxInput(inputId="gsi",
                                                                    label="Green Infrastructure")
+                                                     ),
+                                            tags$div(title="Suitable for use near airports (i.e., lack of open air standing water).",
+                                                     checkboxInput(inputId="air",
+                                                                   label="Safe For Airport Use")
                                                      )
                                             )
                                )

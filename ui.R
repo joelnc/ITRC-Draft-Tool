@@ -96,9 +96,9 @@ shinyUI(
                                                      checkboxInput(inputId="gsi",
                                                                    label="Green Infrastructure")
                                                      ),
-                                            tags$div(title="Suitable for use near airports (i.e., lack of open air standing water).",
+                                            tags$div(title="Practices meeting this condition **can** be designed without open air standing water, which can create an aviation hazard by attracting wildlife.",
                                                      checkboxInput(inputId="air",
-                                                                   label="Safe For Airport Use")
+                                                                   label="Appropriate For Use Near Airports")
                                                      )
                                             )
                                )

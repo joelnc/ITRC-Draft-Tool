@@ -1,0 +1,63 @@
+---
+title: "Performance Summary"
+output:
+    html_document:
+        theme: paper
+        toc: true
+        toc_float: true
+        number_sections: true
+---
+# Section 1
+
+```{r}
+## Probably should parse out a seperate file for each practice category, then load just that file...
+
+## bmp db
+bmpDF <- read.csv("c:/users/95218.CHARLOTTE/Documents/R/Pilot-SCM-App/bWQ BMP FlatFile BMP Indiv Anal_Rev 10-2014.csv",
+                   stringsAsFactors=FALSE, sep=",", header=TRUE)
+
+
+        ## IBMPDB Boxplots
+
+pBox <- plot_ly(type = 'box') %>%
+    add_boxplot(y=bmpDF[which(bmpDF$Monitoring.Station.Type=="Inflow"),
+                        "WQ.Analysis.Value"],
+                boxpoints = FALSE,
+                marker = list(color = 'rgb(7,40,89)'),
+                line = list(color = 'rgb(7,40,89)'),
+                name = "Influent") %>%
+    add_boxplot(y = bmpDF[which(bmpDF$Monitoring.Station.Type=="Outflow"),
+                          "WQ.Analysis.Value"],
+                name = "Effluent",
+                boxpoints = FALSE,
+                marker = list(color = 'rgb(9,56,125)'),
+                line = list(color = 'rgb(9,56,125)'))
+pBox
+
+
+
+        ## Simple table
+        ## output$boxTable0 <- renderTable({
+        ##     temp <- ibmpDataset()
+        ##     inf <- temp[which(temp$Monitoring.Station.Type=="Inflow"),]
+        ##     eff <- temp[which(temp$Monitoring.Station.Type=="Outflow"),]
+
+        ##     tt <- data.frame(
+        ##         Inflow=c(nrow(inf), median(inf$WQ.Analysis.Value),
+        ##                  mean(inf$WQ.Analysis.Value), min(inf$WQ.Analysis.Value),
+        ##                  max(inf$WQ.Analysis.Value)),
+        ##         Outflow=c(nrow(eff), median(eff$WQ.Analysis.Value),
+        ##                   mean(eff$WQ.Analysis.Value), min(eff$WQ.Analysis.Value),
+        ##                   max(eff$WQ.Analysis.Value)),
+        ##         row.names=c("n", "Median", "Mean", "Min.", "Max."))
+
+        ##     tt}, rownames=TRUE
+        ## )
+
+
+
+```
+# Section 2
+
+# Section 3
+More about this website.

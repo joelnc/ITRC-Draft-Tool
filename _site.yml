@@ -1,0 +1,15 @@
+name: "my-website"
+navbar:
+  title: "Disinfection Systems"
+  exclude: ["*.csv", "InfoSheet.*"]
+  left:
+    - text: "Practice Overview"
+      href: index.html
+    - text: "Performance Summary"
+      href: perfSum.html
+    - text: "Installation"
+      href: installation.html
+    - text: "Design"
+      href: design.html
+    - text: "Operations and Maintenance"
+      href: oandm.html

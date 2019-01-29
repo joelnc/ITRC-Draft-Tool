@@ -11,7 +11,6 @@ library(shinyBS)
 shinyServer(
     function(input, output) {
 
-
         ## Pollutant only filtering
         dataSubset0 <- reactive({
             #### If no pollutnats
